@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c1114" id="meta-theme-color">
+  <title>Leandro Montedonico · Sales Manager</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Detect theme before first paint to avoid flash -->
+  <script>
+    (function () {
+      var s = localStorage.getItem('koin-theme');
+      var d = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = s || d;
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Tokens ─────────────────────────────────────────── */
+    :root[data-theme="dark"] {
+      --bg:          #0c1114;
+      --card:        #10181b;
+      --text:        #f5f5f5;
+      --muted:       #98a1a4;
+      --accent:      #14dd3e;
+      --line:        #1f2a2e;
+      --item:        #172024;
+      --item-hover:  #1b2a24;
+      --item-border: transparent;
+      --item-hover-border: #14dd3e;
+      --cta-bg:      #14dd3e;
+      --cta-text:    #0c1114;
+      --toggle-bg:   #172024;
+      --toggle-border: #1f2a2e;
+      --logo:        #ffffff;
+      --shadow:      0 12px 60px rgba(0,0,0,0.6);
+    }
+
+    :root[data-theme="light"] {
+      --bg:          #f4f5f4;
+      --card:        #ffffff;
+      --text:        #10181b;
+      --muted:       #6d6d6d;
+      --accent:      #0c8525;
+      --line:        #eeeeee;
+      --item:        #f5f7f5;
+      --item-hover:  #dcfae6;
+      --item-border: transparent;
+      --item-hover-border: #14dd3e;
+      --cta-bg:      #10181b;
+      --cta-text:    #ffffff;
+      --toggle-bg:   #f4f5f4;
+      --toggle-border: #d0d5d7;
+      --logo:        #000000;
+      --shadow:      0 8px 40px rgba(16,24,27,0.10);
+    }
+
+    /* ── Base ───────────────────────────────────────────── */
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      transition: background 0.35s, color 0.35s;
+    }
+
+    /* ── Card ───────────────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 400px;
+      padding: 48px 32px 32px;
+      position: relative;
+      transition: background 0.35s, box-shadow 0.35s;
+    }
+
+    /* ── Theme toggle ───────────────────────────────────── */
+    .theme-toggle {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 34px;
+      height: 34px;
+      background: var(--toggle-bg);
+      border: 1px solid var(--toggle-border);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      transition: color 0.2s, background 0.2s, border-color 0.2s;
+      padding: 0;
+    }
+
+    .theme-toggle:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .theme-toggle svg { width: 15px; height: 15px; }
+    .theme-toggle .icon-moon { display: none; }
+
+    :root[data-theme="light"] .theme-toggle .icon-sun  { display: none; }
+    :root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
+
+    /* ── Header ─────────────────────────────────────────── */
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .k-mark {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 22px;
+      display: block;
+    }
+
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .role {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 20px;
+      transition: color 0.35s;
+    }
+
+    .company-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--logo);
+      transition: color 0.35s;
+    }
+
+    .company-tag svg { height: 22px; width: auto; display: block; }
+
+    .company-tag::before,
+    .company-tag::after {
+      content: '';
+      display: block;
+      width: 22px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--accent);
+      opacity: 0.6;
+    }
+
+    /* ── Divider ─────────────────────────────────────────── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 28px 0;
+      transition: border-color 0.35s;
+    }
+
+    /* ── Contact list ────────────────────────────────────── */
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: var(--item);
+      border: 1px solid var(--item-border);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .contact-item:hover,
+    .contact-item:active {
+      background: var(--item-hover);
+      border-color: var(--item-hover-border);
+    }
+
+    .contact-icon {
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--accent);
+      transition: color 0.35s;
+    }
+
+    .contact-icon svg { width: 18px; height: 18px; }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .contact-label {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      font-weight: 600;
+      transition: color 0.35s;
+    }
+
+    .contact-value {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.35s;
+    }
+
+    /* ── Add to contacts ─────────────────────────────────── */
+    .add-contact-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px;
+      margin-top: 18px;
+      background: var(--cta-bg);
+      color: var(--cta-text);
+      border-radius: 999px;
+      text-decoration: none;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s, transform 0.1s, background 0.35s, color 0.35s;
+    }
+
+    .add-contact-btn:hover  { opacity: 0.88; }
+    .add-contact-btn:active { transform: scale(0.99); }
+    .add-contact-btn svg    { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      margin-top: 28px;
+      font-size: 0.64rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: color 0.35s;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2"  x2="12" y2="5"/>
+        <line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="4.22" y1="4.22"   x2="6.34" y2="6.34"/>
+        <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+        <line x1="2"  y1="12" x2="5"  y2="12"/>
+        <line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.22" y1="19.78"  x2="6.34" y2="17.66"/>
+        <line x1="17.66" y1="6.34"  x2="19.78" y2="4.22"/>
+      </svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+
+    <div class="header">
+      <!-- Koin "K" mark (koin.com.br favicon) -->
+      <svg class="k-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <path fill="#0c1114" d="M0 6.4c0-2.24 0-3.36.436-4.216A4 4 0 0 1 2.184.436C3.04 0 4.16 0 6.4 0h19.2c2.24 0 3.36 0 4.216.436a4 4 0 0 1 1.748 1.748C32 3.04 32 4.16 32 6.4v19.2c0 2.24 0 3.36-.436 4.216a4 4 0 0 1-1.748 1.748C28.96 32 27.84 32 25.6 32H6.4c-2.24 0-3.360 0-4.216-.436a4 4 0 0 1-1.748-1.748C0 28.96 0 27.840 0 25.6z"/>
+        <path fill="#fff" d="m26 25-7.535-10-2.302 3.8 4.814 6.2z"/>
+        <path fill="#fff" fill-rule="evenodd" d="M8 25V9h3.977v16z"/>
+        <path fill="#14dd3e" d="M19.93 7 8.837 25h4.605L24.535 7z"/>
+      </svg>
+      <h1>Leandro Montedonico</h1>
+      <p class="role">Sales Manager</p>
+      <span class="company-tag">
+        <!-- Koin wordmark -->
+        <svg viewBox="0 0 55 20" role="img" aria-label="Koin">
+          <path fill="currentColor" fill-rule="evenodd" d="M23.664 19.994c4.427 0 8.014-3.48 8.014-7.772 0-4.293-3.587-7.772-8.014-7.772s-8.014 3.48-8.014 7.772 3.587 7.772 8.014 7.772m0-3.516c2.424 0 4.389-1.905 4.389-4.256s-1.965-4.256-4.39-4.256c-2.423 0-4.388 1.905-4.388 4.256s1.965 4.256 4.389 4.256M37.978.007h-3.625v2.962h3.625zm-3.625 7.771h-1.907V4.816h5.536v14.806h-3.626V7.778z"/>
+          <path fill="currentColor" d="M44.659 7.04c.88-1.284 2.294-2.59 4.579-2.59 3.84 0 5.726 2.775 5.726 6.294v8.884H51.34v-8.144c0-2.028-1.22-3.515-3.245-3.515-2.17 0-3.435 1.816-3.435 4.071v7.588h-3.625V4.819h3.625v2.222Z"/>
+          <path fill="currentColor" fill-rule="evenodd" d="M0 4.82v14.805h3.625V4.82zm9.541 5.552 6.87 9.253h-4.579l-4.388-5.737z"/>
+          <path fill="#14dd3e" d="M10.878 2.969.763 19.624h4.199L15.077 2.97z"/>
+        </svg>
+      </span>
+    </div>
+
+    <hr class="divider">
+
+    <div class="contact-list">
+      <a class="contact-item" href="tel:+541130084910">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3.09 4.18 2 2 0 0 1 5.07 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 9.910a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.920z"/>
+          </svg>
+        </div>
+        <div class="contact-info">
+          <span class="contact-label">Teléfono</span>
+          <span class="contact-value">+54 11 3008-4910</span>
+        </div>
+      </a>
+
+      <a class="contact-item" href="mailto:leandro.montedonico@koin.com.br">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+        </div>
+        <div class="contact-info">
+          <span class="contact-label">E-mail</span>
+          <span class="contact-value">leandro.montedonico@koin.com.br</span>
+        </div>
+      </a>
+    </div>
+
+    <button class="add-contact-btn" onclick="saveContact()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <line x1="19" y1="8" x2="19" y2="14"/>
+        <line x1="22" y1="11" x2="16" y2="11"/>
+      </svg>
+      Agregar a Contactos
+    </button>
+
+    <p class="footer">koin.com.br</p>
+  </div>
+
+  <script>
+    var html = document.documentElement;
+    var metaTheme = document.getElementById('meta-theme-color');
+    var META = { dark: '#0c1114', light: '#f4f5f4' };
+
+    function applyTheme(t) {
+      html.dataset.theme = t;
+      metaTheme.content = META[t];
+      localStorage.setItem('koin-theme', t);
+    }
+
+    function toggleTheme() {
+      applyTheme(html.dataset.theme === 'dark' ? 'light' : 'dark');
+    }
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+      if (!localStorage.getItem('koin-theme')) applyTheme(e.matches ? 'dark' : 'light');
+    });
+
+    function saveContact() {
+      var vcard = [
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        'FN:Leandro Montedonico',
+        'N:Montedonico;Leandro;;;',
+        'ORG:Koin',
+        'TITLE:Sales Manager',
+        'TEL;TYPE=CELL:+541130084910',
+        'EMAIL;TYPE=INTERNET,WORK:leandro.montedonico@koin.com.br',
+        'URL:https://www.koin.com.br',
+        'END:VCARD'
+      ].join('\r\n');
+
+      var isIOS     = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      var isAndroid = /Android/i.test(navigator.userAgent);
+
+      if (isIOS) {
+        // iOS Safari: navegar a data URI → la app Contactos lo intercepta
+        window.location.href = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcard);
+      } else if (isAndroid) {
+        // Android: navegar al blob URL sin atributo download → el SO lo abre con Contactos
+        var blob = new Blob([vcard], { type: 'text/vcard' });
+        var url  = URL.createObjectURL(blob);
+        window.location.href = url;
+        setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+      } else {
+        // Desktop: forzar descarga del .vcf
+        var blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+        var url  = URL.createObjectURL(blob);
+        var a    = document.createElement('a');
+        a.href   = url;
+        a.download = 'leandro-montedonico-koin.vcf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 150);
+      }
+    }
+  </script>
+</body>
+</html>
