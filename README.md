@@ -34,15 +34,15 @@ Igual que la tarjeta original: detecta `prefers-color-scheme`, botón sol/luna, 
 
 ## Agregar a Contactos
 
-Mismo mecanismo que `leandro-card`:
-
 | Plataforma | Mecanismo |
 |---|---|
-| **iOS Safari** | Navega a `data:text/vcard;charset=utf-8,...` → Contactos lo intercepta |
+| **iOS Safari** | Navega a `leandro.vcf` (GitHub Pages lo sirve como `text/x-vcard`) → Safari muestra la ficha "Crear contacto nuevo" |
 | **Android Chrome** | Navega a un Blob URL sin atributo `download` → el SO lo abre con Contactos |
 | **Desktop** | Descarga `leandro-montedonico-koin.vcf` via `<a download>` |
 
-`leandro.vcf` es una copia estática del mismo contacto (respaldo, no se usa en producción).
+> **Por qué no `data:` URI en iOS** (como hacía `leandro-card`): Safari en iOS bloquea en silencio la navegación a `data:` URIs — el botón no hacía nada en un iPhone 14. Un archivo real con MIME de vCard sí lo abre.
+
+**`leandro.vcf` se usa en producción (iOS)**: si cambian los datos, actualizar tanto ese archivo como el vCard dentro de `saveContact()` en `index.html`.
 
 ---
 
@@ -65,7 +65,7 @@ Web:      https://www.koin.com.br
 leandro-koin-card/
 ├── index.html        # toda la app (HTML + CSS + JS inline)
 ├── favicon.svg       # K de Koin
-├── leandro.vcf       # vCard estática de respaldo
+├── leandro.vcf       # vCard que abre iOS al tocar "Agregar a Contactos"
 ├── qr.png            # QR verde sobre oscuro (versión de marca)
 ├── qr-light.png      # QR oscuro sobre blanco (máxima compatibilidad / impresión)
 └── tools/make_qr.py  # genera ambos QR

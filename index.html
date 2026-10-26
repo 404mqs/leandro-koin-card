@@ -242,6 +242,13 @@
       transition: color 0.35s;
     }
 
+    /* El mail es largo: que corte en el @ en vez de quedar con "…" */
+    .contact-value.wrap {
+      white-space: normal;
+      overflow-wrap: anywhere;
+      line-height: 1.35;
+    }
+
     /* ── Add to contacts ─────────────────────────────────── */
     .add-contact-btn {
       display: flex;
@@ -279,6 +286,12 @@
       text-transform: uppercase;
       font-weight: 500;
       transition: color 0.35s;
+    }
+
+    /* ── Phones ──────────────────────────────────────────── */
+    @media (max-width: 420px) {
+      .card { padding: 44px 20px 24px; }
+      .contact-item { padding: 14px 14px; gap: 12px; }
     }
   </style>
 </head>
@@ -347,7 +360,7 @@
         </div>
         <div class="contact-info">
           <span class="contact-label">E-mail</span>
-          <span class="contact-value">leandro.montedonico@koin.com.br</span>
+          <span class="contact-value wrap">leandro.montedonico<wbr>@koin.com.br</span>
         </div>
       </a>
     </div>
@@ -402,8 +415,10 @@
       var isAndroid = /Android/i.test(navigator.userAgent);
 
       if (isIOS) {
-        // iOS Safari: navegar a data URI → la app Contactos lo intercepta
-        window.location.href = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcard);
+        // iOS Safari bloquea navegar a data: URIs (el botón no hacía nada).
+        // Navegar al .vcf real servido como text/x-vcard → Safari muestra la ficha de contacto.
+        // Mantener leandro.vcf sincronizado con este vCard.
+        window.location.href = 'leandro.vcf';
       } else if (isAndroid) {
         // Android: navegar al blob URL sin atributo download → el SO lo abre con Contactos
         var blob = new Blob([vcard], { type: 'text/vcard' });
