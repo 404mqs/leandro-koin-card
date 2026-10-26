@@ -242,12 +242,8 @@
       transition: color 0.35s;
     }
 
-    /* El mail es largo: que corte en el @ en vez de quedar con "…" */
-    .contact-value.wrap {
-      white-space: normal;
-      overflow-wrap: anywhere;
-      line-height: 1.35;
-    }
+    /* El mail es largo: una sola línea, fitText() achica la fuente hasta que entre */
+    .contact-value.fit { text-overflow: clip; }
 
     /* ── Add to contacts ─────────────────────────────────── */
     .add-contact-btn {
@@ -360,7 +356,7 @@
         </div>
         <div class="contact-info">
           <span class="contact-label">E-mail</span>
-          <span class="contact-value wrap">leandro.montedonico<wbr>@koin.com.br</span>
+          <span class="contact-value fit">leandro.montedonico@koin.com.br</span>
         </div>
       </a>
     </div>
@@ -396,6 +392,22 @@
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
       if (!localStorage.getItem('koin-theme')) applyTheme(e.matches ? 'dark' : 'light');
     });
+
+    // Achica la fuente de los .fit hasta que entren en una línea (mín. 10px)
+    function fitText() {
+      document.querySelectorAll('.contact-value.fit').forEach(function (el) {
+        el.style.fontSize = '';
+        var size = parseFloat(getComputedStyle(el).fontSize);
+        while (el.scrollWidth > el.clientWidth && size > 10) {
+          size -= 0.5;
+          el.style.fontSize = size + 'px';
+        }
+      });
+    }
+
+    fitText();
+    if (document.fonts) document.fonts.ready.then(fitText);
+    window.addEventListener('resize', fitText);
 
     function saveContact() {
       var vcard = [
